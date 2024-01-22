@@ -14,12 +14,17 @@ const productSlice = createSlice({
   name: "products",
   initialState,
   reducers: {
-    reset: (state) => {
+    productsReset: (state) => {
       state.productLoading = false;
       state.productError = false;
       state.productErrorMessage = "";
       state.productSuccessMessage = "";
       state.productSuccess = false;
+    },
+    findProduct: (state, action) => {
+      state.product = state.products.find(
+        (product) => product._id === action.payload
+      );
     },
     getProductsStart: (state) => {
       state.productLoading = true;
@@ -27,7 +32,7 @@ const productSlice = createSlice({
     getProductsFulfilled: (state, action) => {
       state.productLoading = false;
       state.products = action.payload;
-      console.log(state.products);
+
       state.productLoading = false;
     },
     getProductsFailed: (state, action) => {
@@ -58,7 +63,7 @@ const productSlice = createSlice({
     deleteProductSuccess: (state, action) => {
       state.productLoading = false;
       state.products = state.products.filter(
-        (product) => product._id !== product._id
+        (product) => product._id !== action.payload
       );
     },
     deleteProductError: (state, action) => {
@@ -66,18 +71,39 @@ const productSlice = createSlice({
       state.productError = true;
       state.productErrorMessage = action.payload;
     },
+    createProductFulfilled: (state, action) => {
+      state.productSuccess = true;
+      console.log(action.payload.product);
+      state.productSuccessMessage = action.payload.message;
+    },
+    createProductFailed: (state, action) => {
+      state.productError = true;
+      state.productErrorMessage = action.payload;
+    },
     updateProductStart: (state) => {
       state.productLoading = true;
+    },
+    updateProductFulfilled: (state, action) => {
+      state.productLoading = false;
+      state.productSuccess = true;
+      state.product = action.payload.product;
+      state.productSuccessMessage = action.payload.message;
+    },
+    updateProductFailed: (state, action) => {
+      state.productLoading = false;
+      state.productError = true;
+      state.productErrorMessage = action.payload;
     },
   },
 });
 
 export const {
-  reset,
+  productsReset,
   deleteProductError,
   deleteProductStart,
   deleteProductSuccess,
   filterProduct,
+  findProduct,
   getProductFailed,
   getProductStart,
   getProductSuccess,
@@ -85,6 +111,10 @@ export const {
   getProductsFulfilled,
   getProductsStart,
   updateProductStart,
+  updateProductFailed,
+  updateProductFulfilled,
+  createProductFailed,
+  createProductFulfilled,
 } = productSlice.actions;
 
 export default productSlice.reducer;

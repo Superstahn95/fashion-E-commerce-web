@@ -36,6 +36,30 @@ const orderSlice = createSlice({
       state.orderErrorMessage = action.payload;
       state.orderLoading = false;
     },
+    getOrdersStart: (state) => {
+      state.orderLoading = true;
+    },
+    getOrdersFulfilled: (state, action) => {
+      state.orderLoading = false;
+      state.orders = action.payload;
+    },
+    getOrdersFailed: (state, action) => {
+      state.orderLoading = false;
+      state.orderError = true;
+      state.orderErrorMessage = action.payload;
+    },
+    updateStatusFulfilled: (state, action) => {
+      state.order = action.payload;
+      state.orders = state.orders.map((order) =>
+        order._id == action.payload._id
+          ? { ...order, status: action.payload.status }
+          : order
+      );
+    },
+    updateStatusFailed: (state, action) => {
+      state.orderError = true;
+      state.orderErrorMessage = action.payload;
+    },
   },
 });
 
@@ -44,6 +68,11 @@ export const {
   placeOrderFailed,
   placeOrderFulfilled,
   placeOrderStart,
+  getOrdersStart,
+  getOrdersFailed,
+  getOrdersFulfilled,
+  updateStatusFailed,
+  updateStatusFulfilled,
 } = orderSlice.actions;
 
 export default orderSlice.reducer;

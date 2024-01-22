@@ -7,12 +7,15 @@ import {
   getProductsFailed,
   getProductsFulfilled,
 } from "../features/products/productSlice";
-
+import productsService from "../features/products/productService";
 import { useSelector, useDispatch } from "react-redux";
 
 function Shop() {
   const [shopItems, setShopItems] = useState([]);
   const [filterShop, setFilterShop] = useState(null);
+  const [dataFetched, setDataFetched] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+  const dispatch = useDispatch();
   const {
     products,
     productLoading,
@@ -21,7 +24,8 @@ function Shop() {
     productSuccess,
     productSuccessMessage,
   } = useSelector((state) => state.products);
-
+  console.log(products);
+  console.log(productLoading);
   const handleShop = () => {
     console.log(filterShop);
     console.log("shop should rearrange");
@@ -43,21 +47,59 @@ function Shop() {
   const fetchProducts = async () => {
     dispatch(getProductsStart());
     try {
-      const response = await productsService.getProducts();
+      console.log("about getting the products");
+      const response = await productsService.getProducts({ searchTerm });
+      console.log("we jsut got the products");
       console.log(response);
-      dispatch(getProductsFulfilled(response));
+      dispatch(getProductsFulfilled(response.data.products));
+      setShopItems(products);
     } catch (error) {
-      console.log(error.response);
+      console.log(error);
+      dispatch(getProductsFailed(error.data.message));
       //handle error in a better way
     }
   };
+  const handleRefetch = (event) => {
+    setSearchTerm(event.target.value);
+    console.log(searchTerm);
+  };
+
+  useEffect(() => {
+    if (!dataFetched) {
+      setDataFetched(true);
+      fetchProducts();
+    }
+    if (!filterShop) {
+      setShopItems(products);
+    }
+    if (filterShop === "male") {
+      setShopItems(products.filter((product) => product.gender === "male"));
+    }
+    if (filterShop === "female") {
+      setShopItems(products.filter((product) => product.gender === "female"));
+    }
+  }, [dataFetched, filterShop]);
 
   useEffect(() => {
     fetchProducts();
-  }, []);
+    if (!filterShop) {
+      setShopItems(products);
+    }
+    if (filterShop === "male") {
+      setShopItems(products.filter((product) => product.gender === "male"));
+    }
+    if (filterShop === "female") {
+      setShopItems(products.filter((product) => product.gender === "female"));
+    }
+  }, [searchTerm]);
+  console.log(products);
   return (
-    <section className=" py-7">
-      <Filter handleShop={handleShop} setFilterShop={setFilterShop} />
+    <section className=" py-7 mt-14">
+      <Filter
+        handleShop={handleShop}
+        setFilterShop={setFilterShop}
+        handleChange={handleRefetch}
+      />
       {/* <div className="w-[90%] mx-auto grid md:grid-cols-4 gap-8">
         {shopItems.map((product) => (
           <ProductCard key={product.id} item={product} />
@@ -73,8 +115,8 @@ function Shop() {
         </div>
       ) : (
         <div className="grid w-[90%] mx-auto  gap-8 md:grid-cols-4">
-          {products?.map((product) => (
-            <ProductCard key={product.id} item={product} />
+          {shopItems?.map((product) => (
+            <ProductCard key={product._id} item={product} />
           ))}
         </div>
       )}

@@ -25,6 +25,7 @@ function ProductDetailModal({
   const dispatch = useDispatch();
   const cart = useSelector(getCart);
   const cartItem = useSelector((state) => getSingleCartItem(state, _id));
+  console.log("cart item", cartItem);
   console.log(cart);
   const addAnItemToCart = () => {
     console.log("dispatch an add to cart functionality");
@@ -55,18 +56,17 @@ function ProductDetailModal({
 
   return (
     <>
-      // overlay div
-      <div className="fixed top-0 bottom-0 z-[99] left-0 w-[100vw] h-[100vh] bg-black/60 font-montserrat">
+      <div className="fixed top-0 bottom-0 z-[99] left-0 w-[100vw] h-[100vh] bg-black/60 font-montserrat overflow-y-scroll">
         {/* main modal div */}
         {/* changes relative to absolute  took of mx-auto*/}
-        <div className="bg-white w-[95%]  min-h-[80%] mx-auto relative  mt-20 p-7  top-0  md:w-[80%]">
-          <div className="grid md:grid-cols-2">
+        <div className="bg-white w-[95%]  min-h-[80%] mx-auto relative  mt-20 md:p-7  top-0  md:w-[80%]">
+          <div className="grid md:grid-cols-2 bg-green-500">
             {/* product image */}
-            <div className="flex justify-center ">
+            <div className="flex bg-red-500 justify-center ">
               <img
                 src={image.url}
                 alt={name}
-                className="max-h-[500px] object-contain "
+                className="max-h-[500px] w-[200px] object-contain "
               />
             </div>
             {/* other details */}
@@ -110,7 +110,9 @@ function ProductDetailModal({
                         {cart.some((item) => item._id === _id) ? (
                           <button
                             className="border border-gray-600 py-2 px-3 cursor-pointer"
-                            onClick={() => dispatch(decrementQuantity({ id }))}
+                            onClick={() =>
+                              dispatch(decrementQuantity({ id: _id }))
+                            }
                           >
                             -
                           </button>
@@ -131,7 +133,9 @@ function ProductDetailModal({
                         {cart.some((item) => item._id === _id) ? (
                           <button
                             className="border border-gray-600 py-2 px-3 cursor-pointer"
-                            onClick={() => dispatch(incrementQuantity({ _id }))}
+                            onClick={() =>
+                              dispatch(incrementQuantity({ id: _id }))
+                            }
                           >
                             +
                           </button>

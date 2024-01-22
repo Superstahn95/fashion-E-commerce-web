@@ -93,7 +93,8 @@ export const cartSlice = createSlice({
       localStorage.setItem("cart", JSON.stringify(state.cart));
     },
     cartReset: (state) => {
-      state.cart = JSON.parse(localStorage.setItem("cart", JSON.stringify([])));
+      state.cart = [];
+      localStorage.removeItem("cart");
     },
   },
 });
@@ -118,8 +119,9 @@ export const getTotalCartAmount = (state) =>
         0
       )
     : 0;
-export const getSingleCartItem = (state, id) =>
-  state.cart.cart.find((item) => item.id === id);
+export const getSingleCartItem = (state, id) => {
+  return state.cart.cart.find((item) => item._id === id);
+};
 
 export default cartSlice.reducer;
 

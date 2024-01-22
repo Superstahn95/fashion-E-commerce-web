@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { BsFilter, BsSearch } from "react-icons/bs";
-function Filter({ handleShop, setFilterShop }) {
+function Filter({ handleShop, setFilterShop, handleChange }) {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [showSearch, setShowSearch] = useState(false);
 
@@ -13,18 +13,18 @@ function Filter({ handleShop, setFilterShop }) {
     {
       id: 2,
       text: "Men",
-      action: "men",
+      action: "male",
     },
     {
       id: 3,
       text: "Women",
-      action: "women",
+      action: "female",
     },
-    {
-      id: 4,
-      text: "Kids",
-      action: "kids",
-    },
+    // {
+    //   id: 4,
+    //   text: "Kids",
+    //   action: "kids",
+    // },
   ];
   const toggleList = (index, action) => {
     setSelectedIndex(index);
@@ -32,7 +32,7 @@ function Filter({ handleShop, setFilterShop }) {
     handleShop();
   };
   return (
-    <div className="w-[90%] mx-auto">
+    <div className="w-[90%] mx-auto mb-7">
       <div className="flex items-center justify-between">
         {/* gender adn probable categories */}
         <ul className="flex items-center space-x-5">
@@ -73,6 +73,7 @@ function Filter({ handleShop, setFilterShop }) {
             type="text"
             placeholder="Search"
             className="w-full outline-none px-7 py-3 text-gray-600"
+            onChange={handleChange}
           />
           <div className="absolute top-[50%] left-3 -translate-y-[50%]">
             <BsSearch size={10} />

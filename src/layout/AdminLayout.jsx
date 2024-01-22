@@ -53,9 +53,9 @@ function AdminLayout() {
       to: "users",
     },
     {
-      link: "Manage Deposits",
+      link: "Manage Orders",
       icon: <ArrowDownTrayIcon className="h-5 w-5" />,
-      to: "deposits",
+      to: "orders",
     },
     {
       link: "Investments",

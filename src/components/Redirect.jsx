@@ -34,7 +34,9 @@ function Redirect({ setShowModal, isAuthenticated }) {
   const cart = useSelector(getCart);
   let auth;
   const total = useSelector(getTotalCartAmount);
-  console.log(`reference out of the function: ${reference}`);
+  const { user } = useSelector((state) => state.auth);
+  console.log(user);
+  //   console.log(`reference out of the function: ${reference}`);
   const handleGuestOrder = async () => {
     if (!email || !phoneNumber || !shippingAddress) {
       return alert("Fill all fields for us to be able to contact you");
@@ -86,11 +88,44 @@ function Redirect({ setShowModal, isAuthenticated }) {
     } catch (error) {
       console.log(error);
       setLoading(false);
+      setShowModal(false);
+    }
+  };
+  const handleAuthUserOrder = async () => {
+    const generatedReference = `order_${uuidv4()}`;
+    setReference(generatedReference);
+    const items = cart.map((product) => {
+      return {
+        product: product._id,
+        quantity: product.quantity,
+        price: product.price,
+      };
+    });
+    const customerOrder = {
+      email: user?.email,
+      phoneNumber: user?.phoneNumber,
+      shippingAddress: user?.shippingAddress,
+      totalAmount: total,
+      items,
+      paymentReference: generatedReference,
+    };
+    setLoading(true);
+    try {
+      const response = await orderService.placeOrder(customerOrder);
+      console.log("response from authenticated user order");
+      console.log(response);
+      setLoading(false);
+      setShowPayButton(true);
+    } catch (error) {
+      console.log(error);
+      setLoading(false);
     }
   };
   useEffect(() => {
-    console.log(`reference in the function: ${reference}`);
-  }, [reference]);
+    if (user) {
+      handleAuthUserOrder();
+    }
+  }, [user]);
   return (
     <div className="fixed top-0 left-0 w-full h-screen bg-black/60 flex items-center justify-center z-[1999]">
       <div
@@ -107,11 +142,11 @@ function Redirect({ setShowModal, isAuthenticated }) {
         </p>
 
         {/* for unauthenticated users */}
-        {!isAuthenticated ? (
+        {!user ? (
           <div>
             {showPayButton ? (
               <PayButton
-                text={"Click to pay"}
+                text={"Click to proceed to payment"}
                 email={email}
                 amount={total}
                 reference={reference}
@@ -180,7 +215,13 @@ function Redirect({ setShowModal, isAuthenticated }) {
             <p className="text-sm ">
               Click the button below to proceed to payment
             </p>
-            <PayButton text={"Hey Stanley! Click to pay"} />
+            <PayButton
+              text={`Hey ${user?.name}!! Click to pay`}
+              email={user?.email}
+              amount={total}
+              reference={reference}
+              verifyPayment={handlePaymentVerification}
+            />
           </div>
         )}
       </div>

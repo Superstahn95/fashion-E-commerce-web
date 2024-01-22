@@ -2,11 +2,12 @@ import { XMarkIcon } from "@heroicons/react/24/solid";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import dateFormat from "dateformat";
+import { NavLink, useNavigate } from "react-router-dom";
 
 function ProductViewModal({ setShowModal, id }) {
   const [product, setProduct] = useState(null);
   const { products } = useSelector((state) => state.products);
-
+  const navigate = useNavigate();
   useEffect(() => {
     setProduct(products.filter((product) => product._id == id)[0]);
   }, [products]);
@@ -36,6 +37,20 @@ function ProductViewModal({ setShowModal, id }) {
         </div>
         <div>
           <img src={product?.image.url} alt={product?.name} />
+        </div>
+        <div className="mt-3 ">
+          <button
+            onClick={() => navigate(`product/update/${id}`)}
+            className="bg-black  text-white px-3 py-2 rounded-md w-full "
+          >
+            Click to update
+          </button>
+          {/* <NavLink
+            to={`product/update/${id}`}
+            className="bg-black  text-white px-3 py-2 rounded-md w-full"
+          >
+            Click to update
+          </NavLink> */}
         </div>
       </div>
     </div>

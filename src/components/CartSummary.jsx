@@ -9,25 +9,28 @@ function CartSummary() {
   const [delivery, setDelivery] = useState(3000);
   const total = useSelector(getTotalCartAmount);
   const cart = useSelector(getCart);
-  const [showModal, setShowModal] = useState(true);
+  const [showModal, setShowModal] = useState(false);
   const handleCheckout = () => {
-    if (auth) {
-    } else {
-    }
+    setShowModal(true);
+    // if (auth) {
+    // } else {
+    // }
   };
-
+  const numberOfItems = cart?.reduce((acc, curr) => {
+    return acc + curr.quantity;
+  }, 0);
   return (
-    <div className="border border-gray-300 p-5">
-      <h2 className="font-bold text-xl uppercase pb-3">Cart Totals</h2>
+    <div className="border border-gray-300 p-5 font-montserrat">
+      <h2 className="font-bold text-xl uppercase pb-3">Cart Log</h2>
       <div className="border-b border-dashed border-gray-300 flex items-center space-x-3 py-3">
-        <span className="font-bold text-xl">Subtotal:</span>
-        <span>{total}</span>
+        <span className="font-bold text-xl">Unique Items:</span>
+        <span>{cart?.length}</span>
       </div>
-      {/* delivery div */}
-      <div className="border-b border-dashed border-gray-300 space-x-3 py-3">
-        <span className="font-bold text-xl">Delivery Fee:</span>
-        <span>{delivery}</span>
+      <div className="border-b border-dashed border-gray-300 flex items-center space-x-3 py-3">
+        <span className="font-bold text-xl">Number of items:</span>
+        <span>{numberOfItems}</span>
       </div>
+
       {/* total */}
       <div className="border-b border-dashed border-gray-300 space-x-3 py-3">
         <span className="font-bold text-xl">Total:</span>
@@ -40,8 +43,11 @@ function CartSummary() {
     </button> */}
         {/* the below is just temporal sincei probably should be having a check out page that would take me to fill a form to update user email and other details */}
         {/* <PayButton amount={delivery + total} email={email} /> */}
-        <button className="bg-black text-white font-bold py-2 px-3 rounded-sm">
-          Check out
+        <button
+          onClick={handleCheckout}
+          className="bg-black rounded-md text-white font-bold py-2 px-3 "
+        >
+          Order
         </button>
       </div>
       {showModal && (

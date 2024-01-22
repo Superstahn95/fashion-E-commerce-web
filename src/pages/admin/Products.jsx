@@ -2,6 +2,8 @@ import {
   getProductsStart,
   getProductsFailed,
   getProductsFulfilled,
+  deleteProductError,
+  deleteProductSuccess,
 } from "../../features/products/productSlice";
 import productsService from "../../features/products/productService";
 import Table from "../../components/Table";
@@ -29,12 +31,29 @@ function Products() {
     productSuccess,
     productSuccessMessage,
   } = useSelector((state) => state.products);
-
+  console.log(products);
   const handleView = (id) => {
     setId(id);
     setShowModal(true);
   };
-  const handleDelete = () => {};
+  const handleDelete = async (id) => {
+    const newLoadingRows = { ...loadingRows };
+    newLoadingRows[id] = true;
+    setLoadingRows(newLoadingRows);
+    setLoading(true);
+    try {
+      await productsService.deleteProduct(id);
+      dispatch(deleteProductSuccess(id));
+      setLoading(false);
+      newLoadingRows[id] = false;
+      setLoadingRows(newLoadingRows);
+    } catch (error) {
+      console.log(error);
+      setLoading(false);
+      newLoadingRows[id] = false;
+      setLoadingRows(newLoadingRows);
+    }
+  };
 
   const columns = [
     { name: "Name", selector: (row) => row.name },
@@ -87,6 +106,7 @@ function Products() {
   useEffect(() => {
     if (!dataFetched) {
       fetchProducts();
+      setDataFetched(true);
     }
     if (productError) {
       toast.error(productErrorMessage, toastifyConfig);

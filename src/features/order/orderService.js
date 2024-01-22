@@ -10,6 +10,22 @@ const verifyPayment = async (data) => {
   return response.data;
 };
 
-const orderService = { placeOrder, verifyPayment };
+//admin only => to be protected
+const getOrders = async () => {
+  const response = await client.get("order");
+  return response.data.orders;
+};
+const updateOrderStatus = async (data) => {
+  const { id } = data;
+  const response = await client.patch(`order/${id}`, data);
+  return response.data.order;
+};
+
+const orderService = {
+  placeOrder,
+  verifyPayment,
+  getOrders,
+  updateOrderStatus,
+};
 
 export default orderService;
