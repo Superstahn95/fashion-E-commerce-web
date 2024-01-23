@@ -16,6 +16,7 @@ import toastifyConfig from "../utils/toastify";
 import { Bars } from "react-loader-spinner";
 import FeatureLoader from "../components/FeatureLoader";
 import authService from "../features/auth/authService";
+import client from "../config/client";
 
 function Login() {
   const dispatch = useDispatch();
@@ -34,14 +35,19 @@ function Login() {
   };
   const handleLogIn = async (data) => {
     dispatch(loginStart());
+
     try {
-      const response = await authService.signInUser(data);
-      dispatch(loginSuccess(response));
+      // const response = await authService.signInUser(data);
+      const response = await client.post("auth/login", data, {
+        withCredentials: true,
+      });
+      client.defaults.headers.common[
+        "Authorization"
+      ] = `Bearer ${response.data.token}`;
+      dispatch(loginSuccess(response.data.user));
     } catch (error) {
-      //   console.log(error);
-      //   console.log(error.response.data.message);
-      console.log("we got an error...");
-      console.log(error);
+      console.log("we have an error");
+      console.log(error.response.data.message);
       dispatch(loginFailed(error.response.data.message));
     }
   };

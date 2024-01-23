@@ -45,7 +45,7 @@ function AdminLayout() {
     {
       link: "Dashboard",
       icon: <HomeIcon className="h-5 w-5" />,
-      to: "/dashboard",
+      to: "/admin",
     },
     {
       link: "Manage Users",

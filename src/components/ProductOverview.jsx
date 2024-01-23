@@ -2,14 +2,13 @@ import ProductCard from "./ProductCard";
 import { items } from "../data";
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import productsService from "../features/products/productService";
 import {
   getProductsStart,
   getProductsFailed,
   getProductsFulfilled,
-  findProduct,
 } from "../features/products/productSlice";
 import { Grid } from "react-loader-spinner";
+import client from "../config/client";
 
 function ProductOverview() {
   //fetch prdducts from backend here when component mounts
@@ -27,7 +26,8 @@ function ProductOverview() {
   const fetchProducts = async () => {
     dispatch(getProductsStart());
     try {
-      const response = await productsService.getProducts({ searchTerm: "" });
+      // const response = await productsService.getProducts({ searchTerm: "" });
+      const response = await client.get(`product`);
       // console.log(response);
       dispatch(getProductsFulfilled(response.data.products));
     } catch (error) {

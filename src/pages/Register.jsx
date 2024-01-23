@@ -17,6 +17,7 @@ import { Bars } from "react-loader-spinner";
 import FeatureLoader from "../components/FeatureLoader";
 import authService from "../features/auth/authService";
 import { AiOutlineConsoleSql } from "react-icons/ai";
+import client from "../config/client";
 
 function Register() {
   const dispatch = useDispatch();
@@ -40,8 +41,14 @@ function Register() {
   const signUp = async (data) => {
     dispatch(signUpStart());
     try {
-      const response = await authService.registerUser(data);
-      dispatch(signUpSuccess(response));
+      // const response = await authService.registerUser(data);
+      const response = await client.post("auth/register", data, {
+        withCredentials: true,
+      });
+      client.defaults.headers.common[
+        "Authorization"
+      ] = `Bearer ${response.data.token}`;
+      dispatch(signUpSuccess(response.data.user));
     } catch (error) {
       console.log(error);
       dispatch(signUpFailed(error.response.data.message));

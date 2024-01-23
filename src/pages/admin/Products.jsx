@@ -4,6 +4,7 @@ import {
   getProductsFulfilled,
   deleteProductError,
   deleteProductSuccess,
+  productsReset,
 } from "../../features/products/productSlice";
 import productsService from "../../features/products/productService";
 import Table from "../../components/Table";
@@ -31,7 +32,7 @@ function Products() {
     productSuccess,
     productSuccessMessage,
   } = useSelector((state) => state.products);
-  console.log(products);
+
   const handleView = (id) => {
     setId(id);
     setShowModal(true);
@@ -96,7 +97,7 @@ function Products() {
     try {
       const response = await productsService.getProducts();
       console.log(response);
-      dispatch(getProductsFulfilled(response));
+      dispatch(getProductsFulfilled(response.data.products));
     } catch (error) {
       console.log(error.response);
       dispatch(getProductsFailed);
@@ -112,7 +113,7 @@ function Products() {
       toast.error(productErrorMessage, toastifyConfig);
     }
     const resetTimeout = setTimeout(() => {
-      dispatch(reset());
+      dispatch(productsReset());
     }, 500);
     return () => {
       clearTimeout(resetTimeout);
@@ -124,7 +125,7 @@ function Products() {
         <h2 className=" font-bold text-2xl">Manage Products</h2>
         <NavLink
           to={"product/create"}
-          className="bg-black  text-white px-3 py-2 rounded-md"
+          className="bg-yellow-600  text-white px-3 py-2 rounded-md"
         >
           Create Product
         </NavLink>

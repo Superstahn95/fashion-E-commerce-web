@@ -49,8 +49,7 @@ function Shop() {
     try {
       console.log("about getting the products");
       const response = await productsService.getProducts({ searchTerm });
-      console.log("we jsut got the products");
-      console.log(response);
+
       dispatch(getProductsFulfilled(response.data.products));
       setShopItems(products);
     } catch (error) {
@@ -92,7 +91,7 @@ function Shop() {
       setShopItems(products.filter((product) => product.gender === "female"));
     }
   }, [searchTerm]);
-  console.log(products);
+
   return (
     <section className=" py-7 mt-14">
       <Filter

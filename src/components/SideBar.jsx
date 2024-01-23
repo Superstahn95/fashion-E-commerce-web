@@ -14,8 +14,8 @@ const SideBar = forwardRef(({ showNav, navigationLinks }, ref) => {
             to={link.to}
             className={({ isActive, isPending }) =>
               isActive
-                ? "bg-blue-100 text-blue-500 hover:bg-orange-100 hover:text-blue-500"
-                : "text-white hover:bg-blue-100 hover:text-blue-500 "
+                ? "bg-yellow-600 text-white hover:bg-yellow-600 "
+                : "text-white hover:bg-yellow-600  "
             }
           >
             <div

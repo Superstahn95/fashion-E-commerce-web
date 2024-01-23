@@ -11,20 +11,12 @@ const handleResponse = (response) => {
 
 const getProducts = async (data = {}) => {
   const { searchTerm } = data;
-  //   const { pageNo, limit, searchTerm } = data; => when i feel like including pagination
-  const response = await client.get(`product?searchTerm=${searchTerm}`);
-  //   ?pageNo=${pageNo}&limit=${limit}&searchTerm=${searchTerm}
+  const query = searchTerm ? `product?searchTerm=${searchTerm}` : `product`;
+  const response = await client.get(query);
+
   return handleResponse(response);
   //   return response.data.products;
 };
-// const getAllPosts = async (data = {}) => {
-//     const { pageNo, limit, searchTerm } = data;
-//     &searchTerm=${searchTerm}
-//     const response = await client.get(
-//       `post?pageNo=${pageNo}&limit=${limit}&searchTerm=${searchTerm}`
-//     );
-//     return response.data;
-//   };
 
 const getProduct = async (id) => {
   const response = await client.get(`product/${id}`);

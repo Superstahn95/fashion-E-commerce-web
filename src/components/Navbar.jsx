@@ -228,7 +228,7 @@ function Navbar() {
           {user && (
             <li className="font-semibold my-7 md:my-0 md:ml-8">
               <NavLink
-                to={"/dashboard"}
+                to={user?.role === "admin" ? "/admin" : "/dashboard"}
                 className={({ isActive }) =>
                   isActive ? "text-yellow-500" : "text-white"
                 }
