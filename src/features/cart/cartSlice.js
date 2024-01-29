@@ -2,10 +2,14 @@ import { createSlice } from "@reduxjs/toolkit";
 import swal from "sweetalert";
 //in this slice, since this is just a frontend implementation, i am setting up a cart system for guest users using local storage
 //when linking my frontend to my backend, i will be setting it up for authenticated users
+
+const storedCart = localStorage.getItem("cart");
+const initialCart = storedCart ? JSON.parse(storedCart) : [];
 const initialState = {
-  cart: localStorage.getItem("cart")
-    ? JSON.parse(localStorage.getItem("cart"))
-    : localStorage.setItem("cart", JSON.stringify([])),
+  // cart: localStorage.getItem("cart")
+  //   ? JSON.parse(localStorage.getItem("cart"))
+  //   : localStorage.setItem("cart", JSON.stringify([])),
+  cart: initialCart,
   error: null,
 };
 
