@@ -16,7 +16,8 @@ import { useSelector } from "react-redux";
 function AdminLayout() {
   //   const navigate = useNavigate();
   //   const { user } = useSelector((state) => state.auth);
-  const [showNav, setShowNav] = useState(true);
+
+  const [showNav, setShowNav] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   function handleResize() {
     if (innerWidth <= 640) {
@@ -28,12 +29,8 @@ function AdminLayout() {
     }
   }
 
-  //   useEffect(() => {
-  //     if (!user) {
-  //       navigate("/login");
-  //     }
-  //   }, [navigate, user]);
   useEffect(() => {
+    handleResize();
     if (typeof window != undefined) {
       addEventListener("resize", handleResize);
     }
@@ -41,26 +38,25 @@ function AdminLayout() {
       removeEventListener("resize", handleResize);
     };
   }, []);
+
   const adminLinks = [
     {
       link: "Dashboard",
       icon: <HomeIcon className="h-5 w-5" />,
       to: "/admin",
+      isExact: true,
     },
     {
       link: "Manage Users",
       icon: <UserIcon className="h-5 w-5" />,
       to: "users",
+      isExact: false,
     },
     {
       link: "Manage Orders",
       icon: <ArrowDownTrayIcon className="h-5 w-5" />,
       to: "orders",
-    },
-    {
-      link: "Investments",
-      icon: <CircleStackIcon className="h-5 w-5" />,
-      to: "plans",
+      isExact: false,
     },
   ];
 

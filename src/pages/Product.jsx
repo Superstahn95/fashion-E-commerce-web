@@ -22,12 +22,10 @@ function Product() {
   const cart = useSelector(getCart);
   const cartItem = useSelector((state) => getSingleCartItem(state, id));
   const addAnItemToCart = () => {
-    console.log("dispatch an add to cart functionality");
     dispatch(addToCart({ ...product, quantity }));
     // swal("Done!!", "item added to cart", "success");
   };
   const removeAnItemFromCart = () => {
-    console.log("dispatch the action to remove item");
     dispatch(removeFromCart(product));
   };
   const increaseQuantity = (e) => {
@@ -44,11 +42,10 @@ function Product() {
     setLoading(true);
     try {
       const response = await client.get(`/product/${id}`);
-      console.log(response.data.product);
+
       setProduct(response.data.product);
       setLoading(false);
     } catch (error) {
-      console.log(error);
       setLoading(false);
       setError(true);
     }

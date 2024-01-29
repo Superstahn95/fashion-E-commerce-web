@@ -1,6 +1,6 @@
 import { Routes, Route } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
-import CartProvider from "./context/CartContext";
+import { useEffect } from "react";
 import "./config/client";
 import GeneralLayout from "./layout/GeneralLayout";
 import Home from "./pages/Home";
@@ -17,15 +17,22 @@ import Users from "./pages/admin/Users";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Product from "./pages/Product";
-import AdminDashboardRoute from "./routes/AdminDashboardRoute";
-import ClientDashboardRoute from "./routes/ClientDashboardRoute";
 import ClientLayout from "./layout/ClientLayout";
 import ProtectedRoute from "./routes/ProtectedRoute";
+import Profile from "./pages/client/Profile";
+import { useDispatch } from "react-redux";
+import { loginSuccess } from "./features/auth/authSlice";
 
 function App() {
-  // const user = {
-  //   role: "admin",
-  // };
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    //temporary solution for persisting user state. Will change this to a better state persist function later
+    const loggedInUser = localStorage.getItem("user");
+    if (loggedInUser) {
+      dispatch(loginSuccess(JSON.parse(loggedInUser)));
+    }
+  }, []);
   return (
     <Routes>
       <Route path="/" element={<GeneralLayout />}>
@@ -51,9 +58,11 @@ function App() {
       <Route element={<ProtectedRoute allowedRoles={["user"]} />}>
         <Route path="/dashboard" element={<ClientLayout />}>
           <Route index element={<ClientOrderHistory />} />
+          <Route path="profile" element={<Profile />} />
         </Route>
       </Route>
     </Routes>
+    // <div>My app</div>
   );
 }
 

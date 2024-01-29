@@ -17,7 +17,6 @@ function Users() {
     },
   ];
   const getUsers = async () => {
-    console.log("fetching users....");
     setLoading(true);
     try {
       const response = await client.get("user");

@@ -33,6 +33,12 @@ function Login() {
     email: "",
     password: "",
   };
+  // const config = {
+  //   headers: {
+  //     authorization: `Bearer ${token}`,
+  //     "Content-Type": "application/json",
+  //   },
+  // };
   const handleLogIn = async (data) => {
     dispatch(loginStart());
 
@@ -41,17 +47,19 @@ function Login() {
       const response = await client.post("auth/login", data, {
         withCredentials: true,
       });
+      //save token to local storage
+      localStorage.setItem("token", response.data.token);
+      localStorage.setItem("user", JSON.stringify(response.data.user));
       client.defaults.headers.common[
         "Authorization"
       ] = `Bearer ${response.data.token}`;
       dispatch(loginSuccess(response.data.user));
     } catch (error) {
-      console.log("we have an error");
-      console.log(error.response.data.message);
       dispatch(loginFailed(error.response.data.message));
+      //i'll use the sweet alert library
     }
   };
-  console.log(authError);
+
   useEffect(() => {
     if (authError) {
       toast.error(authErrorMessage, toastifyConfig);

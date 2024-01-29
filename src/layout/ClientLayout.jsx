@@ -48,31 +48,13 @@ function ClientLayout() {
       link: "Dashboard",
       icon: <HomeIcon className="h-5 w-5" />,
       to: "/dashboard",
-    },
-    {
-      link: "Deposit",
-      icon: <ArrowDownTrayIcon className="h-5 w-5" />,
-      to: "/dashboard/deposit",
-    },
-    {
-      link: "Withdraw",
-      icon: <ArrowUpTrayIcon className="h-5 w-5" />,
-      to: "/dashboard/withdrawal",
-    },
-    {
-      link: "Invest Funds",
-      icon: <CircleStackIcon className="h-5 w-5" />,
-      to: "/dashboard/buy-plan",
-    },
-    {
-      link: "Transactions",
-      icon: <CreditCardIcon className="h-5 w-5" />,
-      to: "/dashboard/transactions",
+      isExact: true,
     },
     {
       link: "Profile",
       icon: <IdentificationIcon className="h-5 w-5" />,
       to: "/dashboard/profile",
+      isExact: false,
     },
   ];
   return (

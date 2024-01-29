@@ -10,15 +10,17 @@ import { Link } from "react-router-dom";
 // import { logout } from "../../features/auth/authSlice";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import { logOut } from "../features/auth/authSlice";
 
 function TopBar({ showNav, setShowNav }) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const { user } = useSelector((state) => state.auth);
   const altImage =
     "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png";
   //   const { user } = useSelector((state) => state.auth);
   const handleLogout = () => {
-    dispatch(logout());
+    dispatch(logOut());
     navigate("/");
   };
 
@@ -39,15 +41,16 @@ function TopBar({ showNav, setShowNav }) {
               <Menu.Button className="inline-flex w-full justify-center items-center">
                 <div>
                   <img
-                    // src={user?.profilePhoto ? user?.profilePhoto.url : altImage}
-                    src={altImage}
+                    src={
+                      user?.profilePicture ? user?.profilePicture.url : altImage
+                    }
                     className="w-8 h-8 rounded-full md:mr-4 border-2 border-white shadow-sm"
                     alt=""
                   />
                 </div>
                 <span className="hidden md:block font-medium text-gray-700">
                   {/* {user.name.split(" ")[0]} */}
-                  Stanley
+                  {user?.name}
                 </span>
                 <ChevronDownIcon className="ml-2 h-4 w-4 text-gray-700" />
               </Menu.Button>

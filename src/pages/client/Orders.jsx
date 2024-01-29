@@ -12,7 +12,11 @@ function Orders() {
   const getOrders = async () => {
     try {
       //to work on this when i implement protected api end points
-      const response = await client.get(`order/user/${user._id}`);
+      const config = {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+      };
+      const response = await client.get(`order/user/${user._id}`, config);
+      console.log(response);
       setOrders(response.data.orders);
     } catch (error) {
       console.log(error);

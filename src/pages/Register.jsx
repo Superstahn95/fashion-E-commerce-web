@@ -45,6 +45,9 @@ function Register() {
       const response = await client.post("auth/register", data, {
         withCredentials: true,
       });
+      //save token to local storage
+      localStorage.setItem("token", response.data.token);
+      localStorage.setItem("user", JSON.stringify(response.data.user));
       client.defaults.headers.common[
         "Authorization"
       ] = `Bearer ${response.data.token}`;
@@ -63,17 +66,7 @@ function Register() {
     }
     dispatch(authReset());
   }, [authError, authSuccess, user, navigate, dispatch]);
-  console.log(user);
-  console.log(authLoading);
-  //   useEffect(() => {
-  //     if (isError) {
-  //       toast.error(message, toastifyConfig);
-  //     }
-  //     if (isSuccess || user) {
-  //       navigate("/", { replace: true });
-  //     }
-  //     dispatch(reset());
-  //   }, [isError, isSuccess, message, user, dispatch, navigate]);
+
   return (
     <section className="min-h-[70vh] flex items-center justify-center mt-14">
       <div className="w-full md:w-[500px] mx-auto rounded-md shadow-lg p-4">

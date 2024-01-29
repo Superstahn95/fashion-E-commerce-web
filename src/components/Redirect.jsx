@@ -102,6 +102,7 @@ function Redirect({ setShowModal, isAuthenticated }) {
       };
     });
     const customerOrder = {
+      user: user?._id,
       email: user?.email,
       phoneNumber: user?.phoneNumber,
       shippingAddress: user?.shippingAddress,
@@ -122,9 +123,8 @@ function Redirect({ setShowModal, isAuthenticated }) {
     }
   };
   useEffect(() => {
-    if (user) {
-      handleAuthUserOrder();
-    }
+    if (!user) return;
+    handleAuthUserOrder();
   }, [user]);
   return (
     <div className="fixed top-0 left-0 w-full h-screen bg-black/60 flex items-center justify-center z-[1999]">

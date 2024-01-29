@@ -13,11 +13,11 @@ function CartTable() {
     {
       name: "Product",
       cell: (row) => (
-        <div className="flex items-center space-x-1">
+        <div className="flex items-center space-x-1 ">
           <img
             src={row.image.url}
             alt={row.name}
-            className="w-[60px] h-[60px]"
+            className="w-[30px] h-[30px] md:w-[60px] md:h-[60px]"
           />
           <span>{row.name}</span>
         </div>
@@ -57,7 +57,12 @@ function CartTable() {
       selector: (row) => row.quantity * row.price,
     },
   ];
-  return <Table tableHeaders={columns} tableDetails={cart} />;
+  return (
+    <div className="min-w-[900px] overflow-x-scroll">
+      {" "}
+      <Table tableHeaders={columns} tableDetails={cart} />
+    </div>
+  );
 }
 
 export default CartTable;

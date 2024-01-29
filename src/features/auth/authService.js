@@ -5,6 +5,8 @@ const registerUser = async (data) => {
     withCredentials: true,
   });
   //need to send an access token along with this
+  //save user to local storage
+  localStorage.setItem("user", response.data.user);
   client.defaults.headers.common[
     "Authorization"
   ] = `Bearer ${response.data.token}`;
@@ -15,7 +17,8 @@ const signInUser = async (data) => {
   const response = await client.post("auth/login", data, {
     withCredentials: true,
   });
-  console.log(response);
+
+  localStorage.setItem("user", response.data.user);
   //need to send an access token along with this
   client.defaults.headers.common[
     "Authorization"
@@ -24,6 +27,9 @@ const signInUser = async (data) => {
   console.log("response", response);
   return response.data.user;
 };
+
+//will revisit thiss later
+const reauthenticate = async (data) => {};
 
 const authService = {
   registerUser,
