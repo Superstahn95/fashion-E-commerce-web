@@ -1,8 +1,12 @@
 import axios from "axios";
 
 let refresh = false;
+// const client = axios.create({
+//   baseURL: "http://localhost:5500/api/v1",
+// });
+
 const client = axios.create({
-  baseURL: "http://localhost:5500/api/v1",
+  baseURL: "https://fashion-ecommerce-api.onrender.com/api/v1",
 });
 
 // client.interceptors.response.use(
